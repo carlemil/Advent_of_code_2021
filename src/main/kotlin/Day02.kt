@@ -2,30 +2,27 @@ import java.io.File
 import java.io.InputStream
 
 fun main() {
-    val data = readFileDay2("src/main/resources/data_day_02.txt")
+    val inputStream: InputStream = File("src/main/resources/data_day02.txt").inputStream()
+    val data = mutableListOf<String>()
+    inputStream.bufferedReader().forEachLine { data.add(it) }
+    println("Day 2")
     solve2A(data)
-    solve2B(data)
+    //solve2B(data)
 }
 
-fun solve2A(data: MutableList<Int>) {
-    println(
-        data.zip(data.drop(1))
-            .count { p -> p.first < p.second }
-    )
+fun solve2A(data: MutableList<String>) {
+    val (a, b) =
+        data.map { p -> p.split(" ") }
+            .fold(Pair(0, 0)) { p, t ->
+                when (t[0]) {
+                    "down" -> Pair(p.first, p.second + t[1].toInt())
+                    "up" -> Pair(p.first, p.second - t[1].toInt())
+                    else -> Pair(t[1].toInt() + p.first, p.second)
+                }
+            }
+    println(a * b)
 }
 
-fun solve2B(data: MutableList<Int>) {
-    println(
-        data.windowed(3)
-            .zipWithNext()
-            .count { p -> p.first.sum() < p.second.sum() }
-    )
-}
+fun solve2B(data: MutableList<String>) {
 
-fun readFileDay2(file: String): MutableList<Int> {
-    val inputStream: InputStream = File(file).inputStream()
-    val lineList = mutableListOf<Int>()
-
-    inputStream.bufferedReader().forEachLine { lineList.add(it.toInt()) }
-    return lineList
 }
