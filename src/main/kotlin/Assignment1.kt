@@ -8,24 +8,18 @@ fun main() {
 }
 
 fun solveA(data: MutableList<Int>) {
-    println("a: " +
-            (data.zip(data.drop(1))
-                .count { p -> p.first < p.second })
+    println(
+        data.zip(data.drop(1))
+            .count { p -> p.first < p.second }
     )
 }
 
 fun solveB(data: MutableList<Int>) {
-    println("b: " +
-            (data.windowed(3)
-                .zipWithNext()
-                .count { p -> compare(p) })
+    println(
+        data.windowed(3)
+            .zipWithNext()
+            .count { p -> p.first.sum() < p.second.sum() }
     )
-}
-
-fun compare(p: Pair<List<Int>, List<Int>>): Boolean {
-    val a = p.first.sum()
-    val b = p.second.sum()
-    return a < b
 }
 
 fun readFile(file: String): MutableList<Int> {
