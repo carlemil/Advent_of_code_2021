@@ -38,13 +38,12 @@ fun solve3A(data: MutableList<String>) {
 
 fun solve3B(data: MutableList<String>) {
     var o2 = 0
-    var reducedData = data
-    for (i in data[0].indices) {
-        println("---- $i ----")
+    var reducedData = mutableListOf<String>()
+    reducedData.addAll(data)
+    data[0].indices.forEach { i ->
         val ones = reducedData.filter { it[i] == '1' }.count()
         val zeros = reducedData.size - ones
         val mostCommon = if (ones >= zeros) '1' else '0'
-        println("most common: $mostCommon $ones $zeros")
         var newReducedData = reducedData.filter { it[i] == mostCommon }.toMutableList()
         if (newReducedData.size == 0) newReducedData = mutableListOf(reducedData.last())
         newReducedData.forEach { println(it) }
@@ -52,6 +51,18 @@ fun solve3B(data: MutableList<String>) {
         o2 = Integer.parseInt(newReducedData[0], 2)
     }
 
-
-    print("o2 $o2 * co2")
+    var co2 = 0
+    reducedData.clear()
+    reducedData.addAll(data)
+    data[0].indices.forEach { i ->
+        val ones = reducedData.filter { it[i] == '1' }.count()
+        val zeros = reducedData.size - ones
+        val mostCommon = if (ones < zeros) '1' else '0'
+        var newReducedData = reducedData.filter { it[i] == mostCommon }.toMutableList()
+        if (newReducedData.size == 0) newReducedData = mutableListOf(reducedData.last())
+        newReducedData.forEach { println(it) }
+        reducedData = newReducedData
+        co2 = Integer.parseInt(newReducedData[0], 2)
+    }
+    println(o2 * co2)
 }
