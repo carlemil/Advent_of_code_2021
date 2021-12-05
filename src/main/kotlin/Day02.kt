@@ -2,19 +2,19 @@ import java.io.File
 import java.io.InputStream
 
 fun main() {
-    val data = readFile("src/main/resources/data1.txt")
-    solveA(data)
-    solveB(data)
+    val data = readFileDay2("src/main/resources/data_day_02.txt")
+    solve2A(data)
+    solve2B(data)
 }
 
-fun solveA(data: MutableList<Int>) {
+fun solve2A(data: MutableList<Int>) {
     println(
         data.zip(data.drop(1))
             .count { p -> p.first < p.second }
     )
 }
 
-fun solveB(data: MutableList<Int>) {
+fun solve2B(data: MutableList<Int>) {
     println(
         data.windowed(3)
             .zipWithNext()
@@ -22,7 +22,7 @@ fun solveB(data: MutableList<Int>) {
     )
 }
 
-fun readFile(file: String): MutableList<Int> {
+fun readFileDay2(file: String): MutableList<Int> {
     val inputStream: InputStream = File(file).inputStream()
     val lineList = mutableListOf<Int>()
 
