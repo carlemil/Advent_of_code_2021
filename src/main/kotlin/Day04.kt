@@ -5,7 +5,7 @@ fun main() {
     val inputStream: InputStream = File("src/main/resources/data_day03.txt").inputStream()
     val data = mutableListOf<String>()
     inputStream.bufferedReader().forEachLine { data.add(it) }
-    solve3A(data)
+    //solve3A(data)
     solve3B(data)
 }
 
@@ -50,7 +50,7 @@ fun solve3B(data: MutableList<String>) {
         reducedData = newReducedData
         Integer.parseInt(newReducedData[0], 2)
     }
-
+    
     reducedData.clear()
     reducedData.addAll(data)
     val co2 = data[0].indices.fold(0) { _, i ->
