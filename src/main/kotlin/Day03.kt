@@ -5,8 +5,8 @@ fun main() {
     val inputStream: InputStream = File("src/main/resources/data_day03.txt").inputStream()
     val data = mutableListOf<String>()
     inputStream.bufferedReader().forEachLine { data.add(it) }
-    solve3A(data)
-    //solve3B(data)
+    //solve3A(data)
+    solve3B(data)
 }
 
 fun solve3A(data: MutableList<String>) {
@@ -37,4 +37,21 @@ fun solve3A(data: MutableList<String>) {
 }
 
 fun solve3B(data: MutableList<String>) {
+    var o2 = 0
+    var reducedData = data
+    for (i in data[0].indices) {
+        println("---- $i ----")
+        val ones = reducedData.filter { it[i] == '1' }.count()
+        val zeros = reducedData.size - ones
+        val mostCommon = if (ones >= zeros) '1' else '0'
+        println("most common: $mostCommon $ones $zeros")
+        var newReducedData = reducedData.filter { it[i] == mostCommon }.toMutableList()
+        if (newReducedData.size == 0) newReducedData = mutableListOf(reducedData.last())
+        newReducedData.forEach { println(it) }
+        reducedData = newReducedData
+        o2 = Integer.parseInt(newReducedData[0], 2)
+    }
+
+
+    print("o2 $o2 * co2")
 }
