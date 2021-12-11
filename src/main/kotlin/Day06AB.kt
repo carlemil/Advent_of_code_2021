@@ -2,7 +2,7 @@ import java.io.File
 import java.io.InputStream
 import java.math.BigDecimal
 
-class Day06A {
+class Day06AB {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -14,12 +14,13 @@ class Day06A {
             allFish.forEach {
                 fishSums[it] += 1.0
             }
-            Day06A().solve(fishSums)
+            Day06AB().solve(fishSums, 80)
+            Day06AB().solve(fishSums, 256 - 80)
         }
     }
 
-    fun solve(fish: DoubleArray) {
-        for (i in 1..256) {
+    fun solve(fish: DoubleArray, iterations: Int) {
+        for (i in 1..iterations) {
             nextGeneration(fish)
         }
         println(BigDecimal(fish.sum()).toPlainString())
