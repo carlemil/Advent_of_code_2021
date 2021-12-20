@@ -1,5 +1,7 @@
 import java.io.File
 import java.io.InputStream
+import java.lang.Integer.max
+import java.lang.Integer.min
 
 class Day11 {
     companion object {
@@ -17,19 +19,12 @@ class Day11 {
 
     private fun solveA(data: MutableList<MutableList<Int>>) {
         var flashCounter = 0
-        for (c in 0 .. 100) {
-            for (i in 0 until data.size) {
-                println()
-                for (j in 0 until data[0].size)
-                    print(if (data[i][j] == 0) " " else data[i][j].toString())
-
-            }
+        for (c in 0 until 100) {
             forEachOctopusIncreasesEnergyLevel(data)
             flashCounter += forEachOctopusFlash(data)
             forEachOctopusResetEnergyIfToHigh(data)
-            print("\n\nGeneration $c")
-            println("\nflashCounter $flashCounter")
         }
+        println("\nflashCounter $flashCounter")
     }
 
     private fun forEachOctopusIncreasesEnergyLevel(data: MutableList<MutableList<Int>>) {
@@ -58,14 +53,12 @@ class Day11 {
             data[i][j] = 0
             counter++
 
-            for (a in i - 1..i + 1) {
-                for (b in j - 1..j + 1) {
-                    if ((a >= 0 && a < data.size && b >= 0 && b < data[0].size)) {
-                        if (data[a][b] > 0) {
-                            data[a][b] += 1
-                            if (data[a][b] > 9) {
-                                counter += octopusFlash(data, a, b)
-                            }
+            for (a in max(0, i - 1)..min(i + 1, data.size - 1)) {
+                for (b in max(0, j - 1)..min(j + 1, data[0].size - 1)) {
+                    if (data[a][b] > 0) {
+                        data[a][b] += 1
+                        if (data[a][b] > 9) {
+                            counter += octopusFlash(data, a, b)
                         }
                     }
                 }
