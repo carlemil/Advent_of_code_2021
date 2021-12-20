@@ -12,8 +12,8 @@ class Day11 {
             inputStream.bufferedReader().forEachLine { line ->
                 data.add(line.map { Integer.parseInt(it.toString()) }.toMutableList())
             }
-            Day11().solveA(data)
-            //Day11().solveB(data)
+            //Day11().solveA(data) // data gets corrupted if we run a before b.
+            Day11().solveB(data)
         }
     }
 
@@ -25,6 +25,27 @@ class Day11 {
             forEachOctopusResetEnergyIfToHigh(data)
         }
         println("\nflashCounter $flashCounter")
+    }
+
+    private fun solveB(data: MutableList<MutableList<Int>>) {
+        var step = 0
+        while (!checkAllFlashed(data)) {
+            forEachOctopusIncreasesEnergyLevel(data)
+            forEachOctopusFlash(data)
+            forEachOctopusResetEnergyIfToHigh(data)
+            step++
+        }
+        println(step)
+    }
+
+    private fun checkAllFlashed(data: MutableList<MutableList<Int>>): Boolean {
+        var energy = 0
+        for (i in 0 until data.size) {
+            for (j in 0 until data[0].size) {
+                energy += data[i][j]
+            }
+        }
+        return energy == 0
     }
 
     private fun forEachOctopusIncreasesEnergyLevel(data: MutableList<MutableList<Int>>) {
@@ -76,9 +97,4 @@ class Day11 {
             }
         }
     }
-
-    private fun solveB(data: MutableList<MutableList<Char>>) {
-
-    }
-
 }
