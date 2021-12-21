@@ -23,14 +23,37 @@ class Day12 {
                     nodes[pair.second] = mutableListOf(pair.first)
                 }
             }
-            Day12().solveA(nodes)
+            Day12().solveA(nodes, mutableSetOf())
             //Day12().solveB(data)
         }
     }
 
-    private fun solveA(nodes: MutableMap<String, MutableList<String>>, visSmallN: MutableSet<String>) {
-        print(nodes)
+    private fun solveA(nodes: MutableMap<String, MutableList<String>>, visited: MutableSet<String>) {
+        println(findPaths("start", nodes, visited))
+    }
 
+    private fun findPaths(
+        node: String,
+        nodes: MutableMap<String, MutableList<String>>,
+        visited: MutableSet<String>
+    ): Int {
+        var paths = 0
+        nodes[node]?.forEach { destination ->
+            if (destination == "start") {
+
+            } else if (destination == "end") {
+                paths += 1
+            } else if (destination[0].isLowerCase()) {
+                if (!visited.contains(destination)) {
+                    visited.add(destination)
+                    paths += findPaths(destination, nodes, visited)
+                    visited.remove(destination)
+                }
+            } else {
+                paths += findPaths(destination, nodes, visited)
+            }
+        }
+        return paths
     }
 
     private fun solveB(data: MutableList<MutableList<Int>>) {
