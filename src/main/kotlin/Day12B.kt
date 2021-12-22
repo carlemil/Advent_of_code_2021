@@ -10,7 +10,7 @@ class Day12B {
             inputStream.bufferedReader().forEachLine { line ->
                 data.add(Pair(line.substringBefore('-').trim(), line.substringAfter('-').trim()))
             }
-            var nodes: MutableMap<String, MutableList<String>> = mutableMapOf<String, MutableList<String>>()
+            val nodes: MutableMap<String, MutableList<String>> = mutableMapOf()
             data.forEach { pair ->
                 if (nodes.containsKey(pair.first)) {
                     nodes[pair.first]?.add(pair.second)
@@ -39,19 +39,16 @@ class Day12B {
         var paths = 0
         nodes[node]?.forEach { destination ->
             if (destination == "start") {
-
+                // Don't allow a return to start.
             } else if (destination == "end") {
                 paths += 1
             } else if (destination[0].isLowerCase()) {
-                if (checkVisited(visited, destination)) {
-                    val v = visited[destination] ?: 0
-                    visited[destination] = 1 + v
+                val v = visited[destination] ?: 0
+                visited[destination] = 1 + v
+                if (checkVisited(visited)) {
                     paths += findPaths(destination, nodes, visited)
-                    visited[destination] = v
-                    if (visited[destination] == 0) {
-                        visited.remove(destination)
-                    }
                 }
+                visited[destination] = v
             } else {
                 paths += findPaths(destination, nodes, visited)
             }
@@ -59,11 +56,7 @@ class Day12B {
         return paths
     }
 
-    private fun checkVisited(visited: MutableMap<String, Int>, destination: String): Boolean {
-        val v = visited[destination] ?: 0
-        visited[destination] = 1 + v
-        val v2 = visited.values.count { it == 2 } <= 1 && visited.values.all { it <= 2 }
-        visited[destination] = v
-        return v2
+    private fun checkVisited(visited: MutableMap<String, Int>): Boolean {
+        return visited.values.count { it == 2 } <= 1 && visited.values.all { it <= 2 }
     }
 }
