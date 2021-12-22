@@ -1,7 +1,7 @@
 import java.io.File
 import java.io.InputStream
 
-class Day12 {
+class Day12B {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -23,19 +23,18 @@ class Day12 {
                     nodes[pair.second] = mutableListOf(pair.first)
                 }
             }
-            Day12().solveA(nodes, mutableSetOf())
-            //Day12().solveB(data)
+            Day12B().solveB(nodes, mutableMapOf())
         }
     }
 
-    private fun solveA(nodes: MutableMap<String, MutableList<String>>, visited: MutableSet<String>) {
+    private fun solveB(nodes: MutableMap<String, MutableList<String>>, visited: MutableMap<String, Int>) {
         println(findPaths("start", nodes, visited))
     }
 
     private fun findPaths(
         node: String,
         nodes: MutableMap<String, MutableList<String>>,
-        visited: MutableSet<String>
+        visited: MutableMap<String, Int>
     ): Int {
         var paths = 0
         nodes[node]?.forEach { destination ->
@@ -44,10 +43,14 @@ class Day12 {
             } else if (destination == "end") {
                 paths += 1
             } else if (destination[0].isLowerCase()) {
-                if (!visited.contains(destination)) {
-                    visited.add(destination)
+                if (checkVisited(visited, destination)) {
+                    val v = visited[destination] ?: 0
+                    visited[destination] = 1 + v
                     paths += findPaths(destination, nodes, visited)
-                    visited.remove(destination)
+                    visited[destination] = v
+                    if (visited[destination] == 0) {
+                        visited.remove(destination)
+                    }
                 }
             } else {
                 paths += findPaths(destination, nodes, visited)
@@ -56,7 +59,11 @@ class Day12 {
         return paths
     }
 
-    private fun solveB(data: MutableList<MutableList<Int>>) {
-
+    private fun checkVisited(visited: MutableMap<String, Int>, destination: String): Boolean {
+        val v = visited[destination] ?: 0
+        visited[destination] = 1 + v
+        val v2 = visited.values.count { it == 2 } <= 1 && visited.values.all { it <= 2 }
+        visited[destination] = v
+        return v2
     }
 }
